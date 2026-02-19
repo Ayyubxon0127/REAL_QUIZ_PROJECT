@@ -46,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (mounted) {
         ErrorHandler.showSuccess(context, 'Muvaffaqiyatli ro\'yxatdan o\'tdingiz!');
-        Navigator.pop(context); // Back to login, AuthWrapper will auto-navigate
+        Navigator.pop(context); // AuthWrapper avtomatik yo'naltiradi
       }
     } catch (e) {
       if (mounted) {
@@ -59,177 +59,292 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Kichik ekranlar uchun o'lchov
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: AppConstants.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: const Icon(Icons.arrow_back, color: AppConstants.textPrimary, size: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 8),
-              Text(
-                'Hisob yaratish',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontSize: 28,
+      backgroundColor: const Color(0xFFF5F9FD), // Juda och havorang fon
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Orqaga qaytish tugmasi
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
                     ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Ma\'lumotlaringizni kiriting',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 32),
-
-              // Name field
-              TextFormField(
-                controller: _nameController,
-                textInputAction: TextInputAction.next,
-                textCapitalization: TextCapitalization.words,
-                validator: Validators.name,
-                decoration: InputDecoration(
-                  labelText: 'To\'liq ism',
-                  hintText: 'Ismingizni kiriting',
-                  prefixIcon: const Icon(Icons.person_outline, color: AppConstants.primaryColor),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Email field
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                validator: Validators.email,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'email@example.com',
-                  prefixIcon: const Icon(Icons.email_outlined, color: AppConstants.primaryColor),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Password field
-              TextFormField(
-                controller: _passwordController,
-                obscureText: !_isPasswordVisible,
-                textInputAction: TextInputAction.next,
-                validator: Validators.password,
-                decoration: InputDecoration(
-                  labelText: 'Parol',
-                  hintText: 'Kamida 6 ta belgi',
-                  prefixIcon: const Icon(Icons.lock_outline, color: AppConstants.primaryColor),
-                  filled: true,
-                  fillColor: Colors.white,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: Colors.grey,
-                    ),
-                    onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
+                    child: const Icon(Icons.arrow_back_ios_new,
+                        size: 20, color: AppConstants.textPrimary),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 30),
 
-              // Confirm password field
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: !_isConfirmPasswordVisible,
-                textInputAction: TextInputAction.done,
-                validator: (value) => Validators.confirmPassword(
-                  value,
-                  _passwordController.text,
+                // Sarlavha qismi
+                Text(
+                  'Salom! 👋',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: AppConstants.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                onFieldSubmitted: (_) => _register(),
-                decoration: InputDecoration(
-                  labelText: 'Parolni tasdiqlash',
-                  prefixIcon: const Icon(Icons.lock_outline, color: AppConstants.primaryColor),
-                  filled: true,
-                  fillColor: Colors.white,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: Colors.grey,
+                const SizedBox(height: 8),
+                Text(
+                  'Yangi hisob yarating',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black87,
+                    fontSize: 28,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Bilimlar dunyosiga xush kelibsiz',
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 40),
+
+                // Input maydonlari
+                _buildModernTextField(
+                  controller: _nameController,
+                  label: "To'liq ism",
+                  hint: "Ismingizni kiriting",
+                  icon: Icons.person_outline_rounded,
+                  validator: Validators.name,
+                  textCapitalization: TextCapitalization.words,
+                ),
+                const SizedBox(height: 20),
+
+                _buildModernTextField(
+                  controller: _emailController,
+                  label: "Email",
+                  hint: "email@example.com",
+                  icon: Icons.alternate_email_rounded,
+                  validator: Validators.email,
+                  inputType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 20),
+
+                _buildModernTextField(
+                  controller: _passwordController,
+                  label: "Parol",
+                  hint: "••••••••",
+                  icon: Icons.lock_outline_rounded,
+                  isPassword: true,
+                  isVisible: _isPasswordVisible,
+                  onVisibilityToggle: () =>
+                      setState(() => _isPasswordVisible = !_isPasswordVisible),
+                  validator: Validators.password,
+                ),
+                const SizedBox(height: 20),
+
+                _buildModernTextField(
+                  controller: _confirmPasswordController,
+                  label: "Parolni tasdiqlash",
+                  hint: "••••••••",
+                  icon: Icons.shield_outlined,
+                  isPassword: true,
+                  isVisible: _isConfirmPasswordVisible,
+                  onVisibilityToggle: () => setState(
+                          () => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
+                  validator: (value) => Validators.confirmPassword(
+                    value,
+                    _passwordController.text,
+                  ),
+                  isLast: true,
+                  onSubmitted: (_) => _register(),
+                ),
+
+                const SizedBox(height: 40),
+
+                // Register button
+                Container(
+                  width: double.infinity,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppConstants.primaryColor.withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _register,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppConstants.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
                     ),
-                    onPressed: () => setState(() => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
-
-              // Register button
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _register,
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.5,
-                          ),
-                        )
-                      : const Text('Ro\'yxatdan o\'tish'),
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Login link
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Hisobingiz bormi? ',
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Text(
-                      'Kirish',
+                    child: _isLoading
+                        ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2.5,
+                      ),
+                    )
+                        : const Text(
+                      'Ro\'yxatdan o\'tish',
                       style: TextStyle(
-                        color: AppConstants.primaryColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 32),
-            ],
+                ),
+
+                const SizedBox(height: 30),
+
+                // Login link
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hisobingiz bormi? ',
+                        style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const Text(
+                          'Kirish',
+                          style: TextStyle(
+                            color: AppConstants.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  // Qayta ishlatiladigan zamonaviy input dizayni
+  Widget _buildModernTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    required String? Function(String?) validator,
+    bool isPassword = false,
+    bool isVisible = false,
+    VoidCallback? onVisibilityToggle,
+    TextInputType inputType = TextInputType.text,
+    TextCapitalization textCapitalization = TextCapitalization.none,
+    bool isLast = false,
+    Function(String)? onSubmitted,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.06),
+                spreadRadius: 4,
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: TextFormField(
+            controller: controller,
+            obscureText: isPassword && !isVisible,
+            keyboardType: inputType,
+            textCapitalization: textCapitalization,
+            textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+            onFieldSubmitted: onSubmitted,
+            validator: validator,
+            style: const TextStyle(fontSize: 16),
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+              prefixIcon: Icon(icon, color: AppConstants.primaryColor.withOpacity(0.7), size: 22),
+              suffixIcon: isPassword
+                  ? IconButton(
+                icon: Icon(
+                  isVisible ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                  color: Colors.grey.shade400,
+                  size: 20,
+                ),
+                onPressed: onVisibilityToggle,
+              )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: AppConstants.primaryColor.withOpacity(0.5), width: 1.5),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: Colors.red.shade200, width: 1),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: const BorderSide(color: Colors.red, width: 1.5),
+              ),
+              contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
