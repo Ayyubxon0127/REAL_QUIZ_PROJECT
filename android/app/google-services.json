@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "21474109129",
+    "project_id": "quizproject-ce30a",
+    "storage_bucket": "quizproject-ce30a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21474109129:android:4956acbb40f6e205c0cf18",
+        "android_client_info": {
+          "package_name": "com.example.firebaseproject2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnw88l0Z5rKx8jqqIG3jKCLIPFfHsLQCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
